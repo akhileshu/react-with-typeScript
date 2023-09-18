@@ -4,9 +4,7 @@ import Box from "./Box";
 function App() {
   return (
     <>
-      <Box heading="hello">
-        <button>click me</button>
-      </Box>
+      <Box label="name" value={""} onChangeHandler={() => {}} />
     </>
   );
 }

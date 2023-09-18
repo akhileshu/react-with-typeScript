@@ -1,23 +1,22 @@
-import { ReactNode } from "react";
+// props with generics
 
-// define proptype
-type PropType = {
-  heading: string;
-  count?: number; //optional - may not send from parent component
-  children: ReactNode; //for element as prop
-};
-// in below example if count is optional then default count is 5
-function Box({ heading, count = 5, children }: PropType) {
+type InputValType = string | number;
+
+function Box<T extends InputValType>({
+  label,
+  value,
+  onChangeHandler,
+}: {
+  label: string;
+  value: T;
+  onChangeHandler: () => void;
+}) {
   return (
-    <>
-      <div>
-        {/* using destructured  prop properties */}
-        <h3>
-          {heading} and {count}
-        </h3>
-        {children}
-      </div>
-    </>
+    <form>
+      <label>{label}</label>
+      <input type="text" value={value} onChange={onChangeHandler} />
+      <button>submit</button>
+    </form>
   );
 }
 
