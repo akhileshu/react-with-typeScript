@@ -1,22 +1,18 @@
-import { useContext } from "react";
-import { ThemeContext } from "./App";
+import { useDispatch, useSelector } from 'react-redux'
+import { decrement, increment, incrementByAmount, selectCount } from './reducer'
 
 function Box() {
-  // using the context in any component no matter what's the hierarchy
-  const { theme, toggleThem } = useContext(ThemeContext);
+  const count=useSelector(selectCount)
+  const dispatch=useDispatch()
   return (
-    <div
-      style={{
-        backgroundColor: theme === "dark" ? "black" : "white",
-        color: theme === "dark" ? "white" : "black",
-        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Add this line for box shadow
-        padding: "20px", // Add padding to make it visually appealing
-      }}
-    >
-      <h1>Box</h1>
-      <button onClick={toggleThem}>change theme</button>
-    </div>
-  );
+    <>
+    <div>Box</div>
+    <h1>{count}</h1>
+    <button onClick={()=>dispatch(increment())}>+</button>
+    <button onClick={()=>dispatch(decrement())}>-</button>
+    <button onClick={()=>dispatch(incrementByAmount(5))}>increment By 5</button>
+    </>
+  )
 }
 
-export default Box;
+export default Box
