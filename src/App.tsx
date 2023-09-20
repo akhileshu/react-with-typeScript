@@ -1,42 +1,38 @@
-import { useState, FormEvent } from "react";
-
-// ex form handling with useState
-
-interface Person {
-  name: string;
-  age: number;
+import React, { ReactNode, createContext, useState } from "react";
+import Box from "./Box";
+type ThemeType = "light" | "dark";
+interface ThemeContextType {
+  theme: ThemeType;
+  toggleThem: () => void;
 }
-function App() {
-  const [user, setUser] = useState<Person>(); //at start user is undefined
-  // to get type of e -> onSubmit try {(e)=>{}}
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(user);
+
+// export the created context
+export const ThemeContext = createContext<ThemeContextType>({
+  theme: "light",
+  toggleThem: () => {},
+});
+
+// ThemeProvider is a functional component that wraps children - i.e App with context- i.e  ThemeContext
+const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<ThemeType>("light");
+
+  const toggleThem = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
+
   return (
-    <>
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          value={user?.name || ""} //Warning: A component is changing an uncontrolled input to be controlled.
-          placeholder="name"
-          onChange={(e) => {
-            // prev! -> to remove error because user can be undefined
-            setUser((prev) => ({ ...prev!, name: e.target.value }));
-          }}
-        />
-        <input
-          type="number"
-          value={user?.age || ""} //Warning: A component is changing an uncontrolled input to be controlled.
-          placeholder="age"
-          onChange={(e) => {
-            // prev! -> to remove error because user can be undefined
-            setUser((prev) => ({ ...prev!, age: Number(e.target.value) }));
-          }}
-        />
-        <button type="submit">submit</button>
-      </form>
-    </>
+    <ThemeContext.Provider value={{ theme, toggleThem }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+function App() {
+  return (
+    <ThemeProvider>
+      <div>hello</div>
+      <Box></Box>
+    </ThemeProvider>
   );
 }
 
